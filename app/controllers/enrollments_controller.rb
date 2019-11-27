@@ -4,21 +4,23 @@ class EnrollmentsController < ApplicationController
 
   def index
     # @enrollments = @course.enrollments
-    @teachers = @course.enrollment.where(role: 'teacher')
-    @tas = @course.enrollment.where(role: 'ta')
-    @student = @course.enrollment.where(role: 'student')
+    @teachers = @course.enrollments.where(role: 'teacher')
+    @tas = @course.enrollments.where(role: 'ta')
+    @students = @course.enrollments.where(role: 'student')
   end
 
   def new
+    @users = User.all - @course.users
     @enrollment = @course.enrollments.new
   end
 
   def create
     @enrollment = @course.enrollments.new(enrollment_params)
     if @enrollment.save
-      redirect_to course_enrollment_path(course)
+      redirect_to course_enrollments_path(course)
     else 
       render :new
+    end
   end
 
 
@@ -30,9 +32,9 @@ class EnrollmentsController < ApplicationController
 
   def upate
     if @enrollment.update(enrollment_params)
-      redirect_to course_enrollment_path(@course)
+      redirect_to course_enrollments_path(@course)
     else
-      render: edit
+      render :edit
     end
   end
 
@@ -54,6 +56,4 @@ class EnrollmentsController < ApplicationController
   def set_enroll
     @enrollment = @course.enrollments.find(params[:id])
   end
-
-
 end

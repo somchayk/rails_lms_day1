@@ -1,2 +1,9 @@
-<h1>Enrollments#new</h1>
-<p>Find me in app/views/enrollments/new.html.erb</p>
+<%= form_for [@course, @enrollment] do |f| %>
+  <%= f.label :user %>
+  <%= f.select :user_id, @users.collect { |u| [u.full_name, u.id] } %>
+  <br />
+  <%= f.label :role %>
+  <%= f.select :role, ['ta', 'teacher', 'student'] %>
+  <br />
+  <%= f.submit %>
+<% end %>
